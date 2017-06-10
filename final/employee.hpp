@@ -1,23 +1,40 @@
+#ifndef EMPLOYEE_HPP_TBCTFQ4S
+#define EMPLOYEE_HPP_TBCTFQ4S
 
+#include <cstdint>
+#include <iostream>
 
-class Employee {
-    // name <- literal
-    // lastname <- literal
-    // height <- int?
-    // salary <-  should cointain info about employment type and salary ( contractor and 10000, or regular and 15000)
-    // sex <- enum
+struct Employee {
+    enum Sex : std::int8_t { Male = 0, Female };
+    enum SalaryType : std::int8_t { Contractor = 0, Regular };
+
+    std::string _name;
+    std::string _lastname;
+    std::uint8_t _height;
+    std::pair<float, SalaryType> _salary;
+    Sex _sex;
 };
+
+std::ostream& operator<<(std::ostream& os, const Employee& e) {
+    os << "[" << e._name << "][" << e._lastname << "]";
+    return os;
+}
+
 
 std::vector<Employee> randomEmployees() {
     std::vector<Employee> emps;
-    //emps.push_back(Employee { "Bill",     "Gates",        180, (10000, eContractor), eMale);
-    //emps.push_back(Employee { "Bill",     "Murray",       180, (20000, eContractor), eMale);
-    //emps.push_back(Employee { "Bill",     "Cosby",        180, (1500 , eRegular), eMale);
-    //emps.push_back(Employee { "Andy",     "Mckee",        180, (3000, eContractor), eMale);
-    //emps.push_back(Employee { "Ada",      "Lovelace",     180, (10000, eRegular), eFemale);
-    //emps.push_back(Employee { "Nina",     "Terentiew",    180, (1450.20, eContractor), eFemale);
-    //emps.push_back(Employee { "Ivonka",   "Trump",        180, (1000, eContractor), eFemale);
-    //emps.push_back(Employee { "Maria",    "Jopek",        180, (2000, eRegular), eFemale);
-    //emps.push_back(Employee { "Donald",   "Trump",        180, (1765.80, eContractor), eMale);
-    //emps.push_back(Employee { "Herb", "   Sutter,         180, (1500.543, eRegular)  eMale);
+    emps.push_back(Employee {"Bill", "Murray", 170,
+               std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
+    emps.push_back(Employee {"Bill", "Gates", 180,
+               std::make_pair(rand() % 10000, Employee::Contractor), Employee::Female});
+    emps.push_back(Employee {"Bill", "Cosby", 160,
+               std::make_pair(rand() % 10000, Employee::Regular), Employee::Male});
+    emps.push_back(Employee {"Bill", "Clinton", 110,
+               std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
+    emps.push_back(Employee {"Bill", "Whatever", 120,
+               std::make_pair(rand() % 10000, Employee::Regular), Employee::Female});
+    emps.push_back(Employee {"Bill", "Gates", 185,
+               std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
+    return emps;
 }
+#endif /* end of include guard: EMPLOYEE_HPP_TBCTFQ4S */
