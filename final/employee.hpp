@@ -24,16 +24,18 @@ std::ostream& operator<<(std::ostream& os, const Employee& e) {
 std::vector<Employee> randomEmployees() {
     std::vector<Employee> emps;
     emps.push_back(Employee {"Bill", "Murray", 170,
-               std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
+               std::make_pair(0, Employee::Contractor), Employee::Male});
     emps.push_back(Employee {"Bill", "Gates", 180,
                std::make_pair(rand() % 10000, Employee::Contractor), Employee::Female});
+    emps.push_back(Employee {"Adam", "Sandler", 140,
+               std::make_pair(20000, Employee::Contractor), Employee::Male});
     emps.push_back(Employee {"Bill", "Cosby", 160,
                std::make_pair(rand() % 10000, Employee::Regular), Employee::Male});
     emps.push_back(Employee {"Bill", "Clinton", 110,
                std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
     emps.push_back(Employee {"Bill", "Whatever", 120,
                std::make_pair(rand() % 10000, Employee::Regular), Employee::Female});
-    emps.push_back(Employee {"Bill", "Gates", 185,
+    emps.push_back(Employee {"Melinda", "Gates", 185,
                std::make_pair(rand() % 10000, Employee::Contractor), Employee::Male});
     return emps;
 }
