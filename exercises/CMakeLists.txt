@@ -1,6 +1,8 @@
+find_package(Threads REQUIRED)
+
 function(add_exercise)
     add_executable(exercise_${ARGV0} ${ARGV0}.cpp)
-    target_link_libraries(exercise_${ARGV0} gtest)
+    target_link_libraries(exercise_${ARGV0} gtest ${CMAKE_THREAD_LIBS_INIT})
     add_test(${ARGV0} exercise_${ARGV0})
 endfunction()
 
