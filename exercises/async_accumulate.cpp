@@ -9,7 +9,7 @@ TEST(async_accumulate_with_function, correct) {
     std::vector<int> values { 100};
     std::iota(values.begin(), values.end(), 0);
     // define std::future, std::async
-    int result = 0; // async
+    int result = 100; // async
 
     EXPECT_EQ(result, std::accumulate(values.begin(), values.end(), 0));
 }
