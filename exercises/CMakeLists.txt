@@ -15,3 +15,6 @@ add_exercise(thread)
 add_exercise(threaded_accumulate)
 add_exercise(async_accumulate)
 add_exercise(threaded_string)
+
+add_executable(benchmark_vector_vs_list vector_vs_list.cpp)
+target_link_libraries(benchmark_vector_vs_list benchmark)
