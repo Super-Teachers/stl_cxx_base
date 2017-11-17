@@ -17,7 +17,7 @@ struct Hash {
 
 struct Greater {
     template <typename T>
-    bool operator()(const Hash<T>& lhs, const Hash<T>& rhs) {
+    bool operator()(const Hash<T>& lhs, const Hash<T>& rhs) const {
         return lhs._value < rhs._value;
     }
 };
