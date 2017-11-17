@@ -17,6 +17,7 @@ add_exercise(async_accumulate)
 add_exercise(threaded_string)
 add_exercise(hash_map)
 add_exercise(dictionary)
+add_exercise(cookbook)
 
 add_executable(benchmark_vector_vs_list vector_vs_list.cpp)
 target_link_libraries(benchmark_vector_vs_list benchmark)
