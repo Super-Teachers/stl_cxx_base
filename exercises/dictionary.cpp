@@ -14,13 +14,16 @@ auto lower(const std::string& str) {
 
 struct Dictionary {
     using word = std::string;
-    void addWord(const word& w) { _data.insert(lower(w)); }
-    void remove(const word& w) { _data.erase(lower(w)); }
+    void addWord(const word& w) noexcept { _data.insert(lower(w)); }
+    void remove(const word& w) noexcept { _data.erase(lower(w)); }
 
-    bool spell(const word& w) { return _data.find(lower(w)) != _data.end(); }
+    bool spell(const word& w) const noexcept {
+        return _data.find(lower(w)) != _data.end();
+    }
 
    private:
-    std::set<std::string> _data;
+    using Dictionary_t = std::set<word>;
+    Dictionary_t _data;
 };
 
 TEST(Dictionary, add_word) {
