@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <iostream>
+#include <list>
 #include <set>
 #include <string>
 
@@ -12,6 +14,10 @@ auto lower(const std::string& str) {
 }
 }  // namespace
 
+struct Gen {
+    int operator()() { return std::rand(); }
+    int _counter{1};
+};
 struct Dictionary {
     using word = std::string;
     void addWord(const word& w) noexcept { _data.insert(lower(w)); }
@@ -40,7 +46,30 @@ TEST(Dictionary, remove_word) {
     EXPECT_FALSE(d.spell("Bartek"));
 }
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+std::ostream& operator<<(std::ostream& os, const std::list<int>& l) {
+    for (const auto element : l) {
+        os << element << " ";
+    }
+    return os;
+}
+
+template <typename T>
+void print(const T& v) {
+    std::for_each(std::begin(v), std::end(v),
+                  [](auto& a) { std::cout << a << " "; });
+}
+
+bool compare(const std::vector<int>& v, const std::list<int>& l) {
+    return std::equal(v.begin(), v.end(), l.begin());
+}
+
+bool palindrom(const std::string& pali) {
+    return std::equal(pali.begin(), pali.end(), pali.rbegin());
+}
+
+int main() {
+    std::vector<int> v2{-3, -2, 4, 1, 6, 10, 11, 12};
+    std::list<int> l2{-3, -2, 4, 1, 6, 10, 11};
+    std::cout << std::boolalpha << compare(v2, l2) << std::endl;
+
 }

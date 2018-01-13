@@ -1,56 +1,62 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include <list>
-#include <map>
-#include <numeric>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
-#include "cookbook.hpp"
-
-double cost(const cooking::RecipeList& recipes) {
-    auto value = std::accumulate(
-        recipes.begin(), recipes.end(), 0.0,
-        [](double init, const auto& recipe) -> double {
-            return init + std::accumulate(recipe._ingreds.begin(),
-                                          recipe._ingreds.end(), 0.0,
-                                          [](double innerInit, const auto& i) {
-                                              return innerInit + i._quantity;
-                                          });
-        });
-
-    return value;
+std::list<int> foo() {
+    std::list<int> retObj;
+    int counter = -5;
+    std::generate_n(std::back_inserter(retObj), 10,
+                    [&counter]() { return ++counter; });
+    retObj.push_back(0);
+    return retObj;
 }
 
-TEST(Cookbook, add_recipe) {
-    using cooking::Recipe;
-    using cooking::v1::Cookbook;
-    Cookbook cb;
-    Recipe budyn{"Budyn"};
-    budyn._ingreds = {{"mleko", 50}, {"masło", 100}};
-    cb.addRecipe(budyn, {"deser"});
-    ASSERT_EQ(cb.findRecipes("Budyn").size(), 1);
-    EXPECT_EQ(cost(cb.findRecipes("Budyn")), 150);
+template <typename T>
+void print(T&& t) {
+    std::cout << "[";
+    auto endIt = std::end(t);
+    std::advance(endIt, -1);
+    std::for_each(std::begin(t), endIt,
+                  [](auto val) { std::cout << val << ","; });
+    std::cout << *(endIt);
+    std::cout << "]";
 
-    EXPECT_EQ(cb.findByKeywords({"deser"}).size(), 1);
+    std::cout << std::endl;
 }
 
-TEST(Cookbook, different_version_of_recipe) {
-    using cooking::Recipe;
-    using cooking::v1::Cookbook;
-    Cookbook cb;
-    Recipe budyn{"Budyn"};
-    budyn._ingreds = {{"mleko", 50}, {"masło", 100}};
-    cb.addRecipe(budyn);
+template <typename T>
+auto closeZero(T&& t) {
+    if (t.empty()) throw std::runtime_error("");
+    return *(std::min_element(t.begin(), t.end(), [](auto lhs, auto rhs) {
+        return std::abs(lhs) < std::abs(rhs);
+    }));
+}
 
-    budyn._ingreds.push_back({"czekolada", 100});
-    cb.addRecipe(budyn, {"czekolada"});
+std::vector<std::size_t> find_indexes(const std::list<int>& v, int value) {
+    std::vector<std::size_t> ret;
+    if (v.empty()) return ret;
 
-    EXPECT_EQ(cb.findRecipes("Budyn").size(), 2);
-    EXPECT_EQ(cb.findByKeywords({"czekolada"}).size(), 1);
+    auto it = std::find(v.begin(), v.end(), value);
+
+    while (it != v.end()) {
+        ret.push_back(std::distance(v.begin(), it));
+        it++;
+        it = std::find(it, v.end(), value);
+    }
+
+    return ret;
 }
 
 int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    // print(foo());
+    // std::vector<std::string> aa{"a", "b", "c"};
+    // print(aa);
+    int tab[] = {0, 1, 2};
+    print(tab);
+
+    // std::cout << closeZero(foo()) << std::endl;
+    auto f = foo();
+    print(f);
+    print(find_indexes(f, 0));
+    return 0;
 }
