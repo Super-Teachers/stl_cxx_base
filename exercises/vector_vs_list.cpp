@@ -49,6 +49,7 @@ struct BigHeapData {
 
 template <typename T>
 using is_vector = std::is_same<std::vector<typename T::value_type>, T>;
+
 template <typename Container>
 void BM_push_backs(benchmark::State& state) {
     Container ctx;
