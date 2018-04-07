@@ -2,36 +2,56 @@
 #include <functional>
 #include <map>
 
-template <typename HashType>
-struct Hash {
-    using Int = HashType;
-    template <typename V>
-    Hash(V&& v);
+#include <string>
 
-   private:
-    Int _value;
+struct Hash {
+    using Int = std::int64_t;
+    Hash(const std::string& v) {
+        auto h = std::hash<std::string>{};
+        value = h(v);
+    }
+    Int value;
 };
 
-template <typename Data>
-using MyMap = std::map<Hash<std::int64_t>, Data>;
+struct HashCompare {
+    bool operator()( const Hash& lhs, const Hash& rhs) const { 
+        return true; 
+    }
+};
 
-template <typename Data>
+
+using MyMap = std::map<Hash, std::string, HashCompare>;
+
 struct HashMap {
-    Data& at();
-    void put(Data&&);
 
-    bool empty() { return true; }
+    HashMap() : _map ( HashCompare{} ) {}
+    void put(const std::string& key, const std::string& data) {
+        _map[Hash { key } ] = data;
+    }
 
-    MyMap<Data> _map;
+    bool check(const std::string& key) const noexcept {
+        return _map.find(Hash { key } ) != _map.end();
+    }
+
+    std::string at(const std::string& key) {
+        return _map.at(Hash { key } );
+    }
+
+    bool empty() const noexcept { return _map.empty(); } 
+
+    MyMap _map;
 };
 
 TEST(MyMap, simple) {
-    MyMap<int> asd;
-    EXPECT_TRUE(asd.empty());
-}
-TEST(HashMap, simple) {
-    HashMap<std::string> hm;
-    EXPECT_TRUE(hm.empty());
+    HashMap asd;
+
+    EXPECT_ANY_THROW(asd.at(""));
+    EXPECT_FALSE(asd.check("bird"));
+
+    asd.put("bird", "a bird is ... ");
+    asd.put("bird", "");
+    EXPECT_TRUE(asd.check("bird"));
+    EXPECT_EQ(asd.at("bird"), std::string{""});
 }
 
 int main(int argc, char** argv) {
