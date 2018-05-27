@@ -22,6 +22,7 @@ add_exercise(vector_simple)
 add_exercise(clamp)
 add_exercise(copy)
 add_exercise(floating_point_reading)
+add_exercise(stdreading)
 
 add_executable(benchmark_vector_vs_list vector_vs_list.cpp)
 target_link_libraries(benchmark_vector_vs_list benchmark)
