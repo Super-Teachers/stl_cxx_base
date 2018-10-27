@@ -3,16 +3,31 @@
 
 std::int64_t hash(const std::string& d) { return std::hash<std::string>{}(d); }
 
+struct Hash {
+    friend bool operator<(const Hash&, const Hash&);
+    friend class HashCompare;
+    Hash(const std::string& word) : _value(hash(word)) {}
+
+   private:
+    const int _value;
+};
+
+struct HashCompare {
+    bool operator()(const Hash& lhs, const Hash& rhs) const {
+        return lhs._value < rhs._value;
+    }
+};
+
 struct Dictonary {
-    void insert(const std::string& word) { _dict.emplace(hash(word), word); }
+    void insert(const std::string& word) { _dict[Hash{word}] = word; };
     bool find(const std::string& word) const {
-        return _dict.find(hash(word)) != _dict.end();
+        return _dict.find(Hash{word}) != _dict.end();
     }
 
     bool empty() const { return _dict.empty(); }
 
    private:
-    std::map<int, std::string> _dict;
+    std::map<Hash, std::string, HashCompare> _dict;
 };
 
 TEST(Dictonary, insert) {
