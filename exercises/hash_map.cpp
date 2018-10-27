@@ -1,37 +1,27 @@
 #include <gtest/gtest.h>
-#include <functional>
 #include <map>
 
-template <typename HashType>
-struct Hash {
-    using Int = HashType;
-    template <typename V>
-    Hash(V&& v);
+std::int64_t hash(const std::string& d) { return std::hash<std::string>{}(d); }
+
+struct Dictonary {
+    void insert(const std::string& word) { _dict.emplace(hash(word), word); }
+    bool find(const std::string& word) const {
+        return _dict.find(hash(word)) != _dict.end();
+    }
+
+    bool empty() const { return _dict.empty(); }
 
    private:
-    Int _value;
+    std::map<int, std::string> _dict;
 };
 
-template <typename Data>
-using MyMap = std::map<Hash<std::int64_t>, Data>;
+TEST(Dictonary, insert) {
+    Dictonary dict;
+    EXPECT_TRUE(dict.empty());
 
-template <typename Data>
-struct HashMap {
-    Data& at();
-    void put(Data&&);
-
-    bool empty() { return true; }
-
-    MyMap<Data> _map;
-};
-
-TEST(MyMap, simple) {
-    MyMap<int> asd;
-    EXPECT_TRUE(asd.empty());
-}
-TEST(HashMap, simple) {
-    HashMap<std::string> hm;
-    EXPECT_TRUE(hm.empty());
+    dict.insert("zlo");
+    EXPECT_FALSE(dict.empty());
+    EXPECT_TRUE(dict.find("zlo"));
 }
 
 int main(int argc, char** argv) {
