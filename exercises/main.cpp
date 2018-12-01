@@ -19,6 +19,13 @@ std::string toUpper2(const std::string& s) {
     return tmp;
 }
 
+std::string toUpper3(const std::string& s) {
+    std::string tmp;
+    auto predicate = [](char c) { return ::tolower(c); };
+    std::transform(s.begin(), s.end(), std::back_inserter(tmp), predicate);
+    return tmp;
+}
+
 int main(int argc, char** argv) {
-    std::cout << toUpper(std::string{"aa"}) << "\n";
+    std::cout << toUpper3(std::string{"aa"}) << "\n";
 }
