@@ -4,8 +4,15 @@
 #include <list>
 #include <vector>
 
-std::size_t odds(const std::vector<int>& v) {
-    return std::count_if(v.begin(), v.end(), [](int v) { return v % 2 != 0; });
+float closest(const std::vector<float>& v) {
+    auto it =
+        std::min_element(v.begin(), v.end(), [](auto dzidek, auto babcia) {
+            return std::abs(current) < std::abs(smallest);
+        });
+
+    return *it;
 }
 
-int main(int argc, char** argv) { std::cout << odds({1, 2, 3, 4, 5}) << "\n"; }
+int main(int argc, char** argv) {
+    std::cout << closest(std::vector<float>{-1.f, -0.9, 1.f}) << "\n";
+}
