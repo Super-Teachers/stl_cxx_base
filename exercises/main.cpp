@@ -20,13 +20,13 @@ bool isAllLowercase(const std::string& s) {
                        [](char c) { return c == ::tolower(c); });
 }
 
-void replaceAll(std::vector<std::string>& strs) {
-    std::replace_if(strs.begin(), strs.end(), isAllLowercase,
-                    std::string{"bummer"});
+void removeSomething(std::vector<std::string>& a) {
+    const auto it = std::remove(a.begin(), a.end(), "Ala");
+    a.erase(it, a.end());
 }
 
 int main(int argc, char** argv) {
-    std::vector<std::string> v{"Ala", "bob", "AA"};
-    replaceAll(v);
+    std::vector<std::string> v{"Ala", "bob", "Ala", "bob"};
+    removeSomething(v);
     print(v);
 }
