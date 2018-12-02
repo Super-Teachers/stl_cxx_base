@@ -20,13 +20,17 @@ bool isAllLowercase(const std::string& s) {
                        [](char c) { return c == ::tolower(c); });
 }
 
-void removeSomething(std::vector<std::string>& a) {
-    const auto it = std::remove(a.begin(), a.end(), "Ala");
-    a.erase(it, a.end());
+void remove(std::vector<std::string>& a) {
+    auto hasNumber = [](const std::string& str) {
+        return std::any_of(str.begin(), str.end(),
+                           [](char c) { return isdigit(c); });
+    };
+
+    a.erase(std::remove_if(a.begin(), a.end(), hasNumber), a.end());
 }
 
 int main(int argc, char** argv) {
-    std::vector<std::string> v{"Ala", "bob", "Ala", "bob"};
-    removeSomething(v);
+    std::vector<std::string> v{"Ala", "bob1", "Ala2", "bob"};
+    remove(v);
     print(v);
 }
