@@ -20,26 +20,25 @@ void print(T&& t, std::ostream& os = std::cout) {
     std::cout << "]\n";
 }
 
-void read2() {
-    std::vector<float> floats;
-    std::size_t len;
-    std::cin >> len;
-    print(floats);
-
-    std::copy_n(std::istream_iterator<float>(std::cin), len,
-                std::back_inserter(floats));
-    print(floats, std::cout);
+void printSpecial(const std::vector<std::uint8_t>& v) {
+    auto old = std::cout.flags();
+    std::cout << std::hex;
+    for (auto c : v) {
+        std::cout << std::setw(5) << std::left << std::showbase;
+        std::cout.fill('_');
+        std::cout << static_cast<int>(c) << ",";
+    }
+    std::cout << "\n";
+    std::cout.setf(old);
 }
 
-std::vector<float> read(std::size_t N) {
-    std::vector<float> res;
-    std::generate_n(std::back_inserter(res), N, []() {
-        float f;
-        std::cin >> f;
-        return f;
-    });
+std::vector<float> read2(int N) {
+    std::vector<float> floats;
 
-    return res;
+    std::copy_n(std::istream_iterator<float>(std::cin), N,
+                std::back_inserter(floats));
+    print(floats);
+    return floats;
 }
 
 float calculate(const std::vector<float>& vec) {
@@ -52,9 +51,18 @@ float calculate(const std::vector<float>& vec) {
 }
 
 int main(int argc, char** argv) {
-    std::size_t N;
-    std::cin >> N;
-    const auto v = read(N);
-    std::cout << calculate(v) << "\n";
-    return EXIT_SUCCESS;
+    // int N;
+    // if ( std::cin >> N) {
+    //}
+    ////std::cin.exceptions(std::ios::badbit | std::ios::failbit);
+    // try {
+    // const auto v = read2(N);
+    // std::cout << calculate(v) << "\n";
+    //} catch (const std::exception& ex) {
+    //}
+    // return EXIT_SUCCESS;
+    printSpecial(std::vector<std::uint8_t>{1, 2, 3});
+
+    std::cout << 10;
+    std::cout << std::endl;
 }
